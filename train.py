@@ -8,29 +8,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
 from azureml.core.run import Run
+from azureml.core import Dataset
 from azureml.data.dataset_factory import TabularDatasetFactory
 
-# TODO: Create TabularDataset using TabularDatasetFactory
-# Data is located at:
-# "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
-
-ds = ### YOUR CODE HERE ###
-
-x, y = clean_data(ds)
-
-# TODO: Split data into train and test sets.
-
-### YOUR CODE HERE ###a
-
-run = Run.get_context()
-
+""" Cleans the data. Returns cleaned data. """
 def clean_data(data):
     # Dict for cleaning data
     months = {"jan":1, "feb":2, "mar":3, "apr":4, "may":5, "jun":6, "jul":7, "aug":8, "sep":9, "oct":10, "nov":11, "dec":12}
     weekdays = {"mon":1, "tue":2, "wed":3, "thu":4, "fri":5, "sat":6, "sun":7}
 
     # Clean and one hot encode data
-    x_df = data.to_pandas_dataframe().dropna()
+    x_df = data.dropna()
     jobs = pd.get_dummies(x_df.job, prefix="job")
     x_df.drop("job", inplace=True, axis=1)
     x_df = x_df.join(jobs)
@@ -48,10 +36,27 @@ def clean_data(data):
     x_df["day_of_week"] = x_df.day_of_week.map(weekdays)
     x_df["poutcome"] = x_df.poutcome.apply(lambda s: 1 if s == "success" else 0)
 
-    y_df = x_df.pop("y").apply(lambda s: 1 if s == "yes" else 0)
-    
+    # The y column indicates if a customer subscribed to a fixed term deposit
+    x_df["y"] = x_df.y.apply(lambda s: 1 if s == "yes" else 0)
+
+    return x_df
+
+""" Splits the data to data used for training and labels to predict. Returns a tuple (data, labels)"""
+def split_train_label_data(x_df):
+    # The y column indicates if a customer subscribed to a fixed term deposit
+    y_df = x_df.pop("y")
+
+    return (x_df, y_df)
 
 def main():
+    run = Run.get_context()
+    # Get the dataset from run inputs
+    ds = run.input_datasets['dataset'] # doesn't seem to run, 'dataset' input is not found
+    #ds = Dataset.get_by_name(workspace, name='bankmarketing-cleaned-ds')
+    x, y = split_train_label_data(ds.to_pandas_dataframe())
+
+    # Split data into train and test sets: 20% of the dataset to include in the test split.
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
     # Add arguments to script
     parser = argparse.ArgumentParser()
 
@@ -66,7 +71,13 @@ def main():
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
+    # Metric reported is 'Accuracy' => metric to optimize
     run.log("Accuracy", np.float(accuracy))
+
+    os.makedirs('outputs', exist_ok=True)
+    # Save the model into run history
+    joblib.dump(model, 'outputs/model.joblib')
+
 
 if __name__ == '__main__':
     main()
