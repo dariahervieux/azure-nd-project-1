@@ -1,15 +1,14 @@
 from sklearn.linear_model import LogisticRegression
-import argparse
-import os
 import numpy as np
 from sklearn.metrics import mean_squared_error
-import joblib
+
+from sklearn.metrics import recall_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import balanced_accuracy_score, accuracy_score, confusion_matrix, roc_auc_score
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
-from azureml.core.run import Run
-from azureml.core import Dataset
-from azureml.data.dataset_factory import TabularDatasetFactory
 
 """ Cleans the data. Returns cleaned data. """
 def clean_data(data):
@@ -49,34 +48,37 @@ def split_train_label_data(x_df):
     return (x_df, y_df)
 
 def main():
-    run = Run.get_context()
-    # Get the dataset from run inputs
-    ds = run.input_datasets['dataset']
-    x, y = split_train_label_data(ds.to_pandas_dataframe())
+    csv_path ='bankmarketing_train.csv'
+    df = pd.read_csv(csv_path)
+
+    # check classes balance
+    print (df['y'].value_counts()/df.shape[0])
+
+    x = clean_data(df)
+
+    x, y = split_train_label_data(x)
+
 
     # Split data into train and test sets: 20% of the dataset to include in the test split.
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-    # Add arguments to script
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument('--C', type=float, default=1.0, help="Inverse of regularization strength. Smaller values cause stronger regularization")
-    parser.add_argument('--max_iter', type=int, default=100, help="Maximum number of iterations to converge")
+    # Train a model with the parameters found by HyperDrive
+    model = LogisticRegression(C=119.04915426, max_iter=200).fit(x_train, y_train)
 
-    args = parser.parse_args()
+    # Weighted model
+    #model = LogisticRegression(C=119.04915426, max_iter=200,class_weight={0:11, 1:89}).fit(x_train, y_train)
 
-    run.log("Regularization Strength:", np.float(args.C))
-    run.log("Max iterations:", np.int(args.max_iter))
-
-    model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
+    y_pred = model.predict(x_test)
 
     accuracy = model.score(x_test, y_test)
-    # Metric reported is 'Accuracy' => metric to optimize
-    run.log("Accuracy", np.float(accuracy))
 
-    os.makedirs('outputs', exist_ok=True)
-    # Save the model into run history
-    joblib.dump(model, 'outputs/model.joblib')
+    print(f'Accuracy Score: {accuracy}')
+    print(f'Balanced accuracy Score: {balanced_accuracy_score(y_test,y_pred)}')
 
+    print(f'Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}')
+    print(f'Classification report:\n{classification_report(y_test,y_pred)}')
+
+    print(f'Area Under Curve: {roc_auc_score(y_test, y_pred)}')
 
 if __name__ == '__main__':
     main()

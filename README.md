@@ -76,42 +76,245 @@ VotingEnsemble is ensemble model created from previous AutoML iterations, that i
 
 Best pipeline details:
 ```
-Pipeline(memory=None,
-         steps=[('datatransformer',
-                 DataTransformer(allow_chargram=None, enable_dnn=None,
-                                 enable_feature_sweeping=None,
-                                 feature_sweeping_config=None,
-                                 feature_sweeping_timeout=None,
-                                 featurization_config=None, force_text_dnn=None,
-                                 is_cross_validation=None,
-                                 is_onnx_compatible=None, logger=None,
-                                 observer=None, task=None, working_dir=None)),
-                ('prefittedsoftvotingclassifier...
-                                                                                                    min_samples_split=0.15052631578947367,
-                                                                                                    min_weight_fraction_leaf=0.0,
-                                                                                                    n_estimators=10,
-                                                                                                    n_jobs=1,
-                                                                                                    oob_score=False,
-                                                                                                    random_state=None,
-                                                                                                    verbose=0,
-                                                                                                    warm_start=False))],
-                                                                     verbose=False))],
-                                               flatten_transform=None,
-                                               weights=[0.07142857142857142,
-                                                        0.5,
-                                                        0.07142857142857142,
-                                                        0.07142857142857142,
-                                                        0.07142857142857142,
-                                                        0.07142857142857142,
-                                                        0.07142857142857142,
-                                                        0.07142857142857142]))],
-         verbose=False)
+datatransformer
+{'allow_chargram': None,
+ 'enable_dnn': None,
+ 'enable_feature_sweeping': None,
+ 'feature_sweeping_config': None,
+ 'feature_sweeping_timeout': None,
+ 'featurization_config': None,
+ 'force_text_dnn': None,
+ 'is_cross_validation': None,
+ 'is_onnx_compatible': None,
+ 'logger': None,
+ 'observer': None,
+ 'task': None,
+ 'working_dir': None}
+
+prefittedsoftvotingclassifier
+{'estimators': ['1:maxabsscaler',
+                '0:maxabsscaler',
+                '27:sparsenormalizer',
+                '26:sparsenormalizer',
+                '13:minmaxscaler',
+                '5:standardscalerwrapper',
+                '11:minmaxscaler',
+                '20:standardscalerwrapper'],
+ 'weights': [0.13333333333333333,
+             0.4,
+             0.13333333333333333,
+             0.06666666666666667,
+             0.06666666666666667,
+             0.06666666666666667,
+             0.06666666666666667,
+             0.06666666666666667]}
+
+1 - maxabsscaler
+{'copy': True}
+
+1 - xgboostclassifier
+{'base_score': 0.5,
+ 'booster': 'gbtree',
+ 'colsample_bylevel': 1,
+ 'colsample_bynode': 1,
+ 'colsample_bytree': 1,
+ 'gamma': 0,
+ 'learning_rate': 0.1,
+ 'max_delta_step': 0,
+ 'max_depth': 3,
+ 'min_child_weight': 1,
+ 'missing': nan,
+ 'n_estimators': 100,
+ 'n_jobs': 1,
+ 'nthread': None,
+ 'objective': 'binary:logistic',
+ 'random_state': 0,
+ 'reg_alpha': 0,
+ 'reg_lambda': 1,
+ 'scale_pos_weight': 1,
+ 'seed': None,
+ 'silent': None,
+ 'subsample': 1,
+ 'tree_method': 'auto',
+ 'verbose': -10,
+ 'verbosity': 0}
+
+0 - maxabsscaler
+{'copy': True}
+
+0 - lightgbmclassifier
+{'boosting_type': 'gbdt',
+ 'class_weight': None,
+ 'colsample_bytree': 1.0,
+ 'importance_type': 'split',
+ 'learning_rate': 0.1,
+ 'max_depth': -1,
+ 'min_child_samples': 20,
+ 'min_child_weight': 0.001,
+ 'min_split_gain': 0.0,
+ 'n_estimators': 100,
+ 'n_jobs': 1,
+ 'num_leaves': 31,
+ 'objective': None,
+ 'random_state': None,
+ 'reg_alpha': 0.0,
+ 'reg_lambda': 0.0,
+ 'silent': True,
+ 'subsample': 1.0,
+ 'subsample_for_bin': 200000,
+ 'subsample_freq': 0,
+ 'verbose': -10}
+
+27 - sparsenormalizer
+{'copy': True, 'norm': 'l2'}
+
+27 - xgboostclassifier
+{'base_score': 0.5,
+ 'booster': 'gbtree',
+ 'colsample_bylevel': 1,
+ 'colsample_bynode': 1,
+ 'colsample_bytree': 0.5,
+ 'eta': 0.5,
+ 'gamma': 0,
+ 'learning_rate': 0.1,
+ 'max_delta_step': 0,
+ 'max_depth': 7,
+ 'max_leaves': 15,
+ 'min_child_weight': 1,
+ 'missing': nan,
+ 'n_estimators': 100,
+ 'n_jobs': 1,
+ 'nthread': None,
+ 'objective': 'reg:logistic',
+ 'random_state': 0,
+ 'reg_alpha': 1.875,
+ 'reg_lambda': 1.3541666666666667,
+ 'scale_pos_weight': 1,
+ 'seed': None,
+ 'silent': None,
+ 'subsample': 0.7,
+ 'tree_method': 'auto',
+ 'verbose': -10,
+ 'verbosity': 0}
+
+26 - sparsenormalizer
+{'copy': True, 'norm': 'l1'}
+
+26 - lightgbmclassifier
+{'boosting_type': 'gbdt',
+ 'class_weight': None,
+ 'colsample_bytree': 0.99,
+ 'importance_type': 'split',
+ 'learning_rate': 0.05789894736842106,
+ 'max_bin': 240,
+ 'max_depth': 10,
+ 'min_child_samples': 2727,
+ 'min_child_weight': 2,
+ 'min_split_gain': 0.21052631578947367,
+ 'n_estimators': 400,
+ 'n_jobs': 1,
+ 'num_leaves': 197,
+ 'objective': None,
+ 'random_state': None,
+ 'reg_alpha': 0.5789473684210527,
+ 'reg_lambda': 0.21052631578947367,
+ 'silent': True,
+ 'subsample': 0.09947368421052633,
+ 'subsample_for_bin': 200000,
+ 'subsample_freq': 0,
+ 'verbose': -10}
+
+13 - minmaxscaler
+{'copy': True, 'feature_range': (0, 1)}
+
+13 - sgdclassifierwrapper
+{'alpha': 4.693930612244897,
+ 'class_weight': 'balanced',
+ 'eta0': 0.001,
+ 'fit_intercept': False,
+ 'l1_ratio': 0.3877551020408163,
+ 'learning_rate': 'constant',
+ 'loss': 'squared_hinge',
+ 'max_iter': 1000,
+ 'n_jobs': 1,
+ 'penalty': 'none',
+ 'power_t': 0.3333333333333333,
+ 'random_state': None,
+ 'tol': 0.001}
+
+5 - standardscalerwrapper
+{'class_name': 'StandardScaler',
+ 'copy': True,
+ 'module_name': 'sklearn.preprocessing._data',
+ 'with_mean': True,
+ 'with_std': True}
+
+5 - sgdclassifierwrapper
+{'alpha': 3.0612938775510203,
+ 'class_weight': 'balanced',
+ 'eta0': 0.0001,
+ 'fit_intercept': True,
+ 'l1_ratio': 0.8979591836734693,
+ 'learning_rate': 'constant',
+ 'loss': 'modified_huber',
+ 'max_iter': 1000,
+ 'n_jobs': 1,
+ 'penalty': 'none',
+ 'power_t': 0.6666666666666666,
+ 'random_state': None,
+ 'tol': 0.01}
+
+11 - minmaxscaler
+{'copy': True, 'feature_range': (0, 1)}
+
+11 - sgdclassifierwrapper
+{'alpha': 9.59184081632653,
+ 'class_weight': 'balanced',
+ 'eta0': 0.01,
+ 'fit_intercept': True,
+ 'l1_ratio': 0.3877551020408163,
+ 'learning_rate': 'invscaling',
+ 'loss': 'log',
+ 'max_iter': 1000,
+ 'n_jobs': 1,
+ 'penalty': 'none',
+ 'power_t': 0,
+ 'random_state': None,
+ 'tol': 0.01}
+
+20 - standardscalerwrapper
+{'class_name': 'StandardScaler',
+ 'copy': True,
+ 'module_name': 'sklearn.preprocessing._data',
+ 'with_mean': True,
+ 'with_std': True}
+
+20 - randomforestclassifier
+{'bootstrap': False,
+ 'ccp_alpha': 0.0,
+ 'class_weight': 'balanced',
+ 'criterion': 'gini',
+ 'max_depth': None,
+ 'max_features': 0.05,
+ 'max_leaf_nodes': None,
+ 'max_samples': None,
+ 'min_impurity_decrease': 0.0,
+ 'min_impurity_split': None,
+ 'min_samples_leaf': 0.01,
+ 'min_samples_split': 0.10368421052631578,
+ 'min_weight_fraction_leaf': 0.0,
+ 'n_estimators': 10,
+ 'n_jobs': 1,
+ 'oob_score': False,
+ 'random_state': None,
+ 'verbose': 0,
+ 'warm_start': False}
 ```
 
 
 ## Pipeline comparison
 
-HyperDrive tuning of the Logistic Regression gives *91,76024%* of accuracy with C between 119 and 174 and and max-iter between 125 and 200.
+HyperDrive tuning of the Logistic Regression gives *91,76024%* of accuracy with `C` between 119 and 174 and and `max-iter` between 125 and 200.
 ![HyperDrive best 10 runs](./hd-best-10-runs.JPG)
 
 AutoML VotingEnsemble best run score is *91,71%*.
@@ -127,14 +330,37 @@ AutoML pipeline on the other hand helps us to explore different models which pro
 
 ## Future work
 
-Running AutoML with featurazation='auto' detected the imbalance in data, which can lead to biased predictions. To deal with it we need either to use a metric that is more appropriate for this matter (AutoML suggests using 'AUC_weighted'), either balance the data.
+Provided data is imbalanced: "0" 88,7951% of total outcomes and "1" is only 11,2049%. This can be lead to biased predictions towards "0" class.
+According to calculated confusion matrix (see [standalone_lr.py](./standalone_lr.py)), only 325 "1" out of 728 were predicted correctly:
+```
+Confusion Matrix:
+[[5719  143]
+ [ 403  325]]
+```
+The value of the Area Under the Curve (0.71) and Recall Score for "1" class (0.45) show us that the model performs poorly.
 
+To mesure the performance of the model on imbalanced data, one should use an appropriate metric:
+*  'balanced_accuracy', 'AUC_weighted' for AutoMLRun
+*  'roc_auc_score', 'f1_score' for LogisticRegression model
+
+To adjust LogisticRegression predictions we can introduce weights for each class using `class_weight` hyperparameter . First thing to try out is weight values deduced from label distribution, taking the inverse of the distribution value:  89 for "yes" and 11 for "no". Then we can use HyperDrive to search other weights giving the same or better performance.
+
+Similarly, we can introduce weights in AutoML run using one of the available configuration options:
+* `sample_weight` - the weight to give to *each training sample* when running fitting pipelines,
+* `weight_column_name` - the name of the sample weight column contained in the training data.
+
+To deal with the imbalance, we can also try to balance the data, for example using [Synthetic Minority Oversampling Technique (SMOTE)](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/). However this method should be used with caution since it requires expertise and domain knowledge.
 
 # Resources
 * [Tune hyperparameters for your model with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters#define-search-space)
 * [Estimator Azure ML package](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.estimator?view=azure-ml-py)
+* [LogisticRegression class](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
 * [Model Azure ML class](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model.model?view=azure-ml-py)
 * [AutoMLRun class](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.run.automlrun?view=azure-ml-py)
+* [AutoMLConfig class](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.automlconfig.automlconfig?view=azure-ml-py)
+* [Azure ML - Understand scaling and normalization](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-auto-features#scaling-and-normalization)
+* [Azure ML - Handle imbalanced data](https://docs.microsoft.com/en-us/azure/machine-learning/concept-manage-ml-pitfalls#handle-imbalanced-data)
 * [GitHub - Azure ML notebooks](https://github.com/Azure/MachineLearningNotebooks)
 * [Article - Voting Classifier using Sklearn](https://www.geeksforgeeks.org/ml-voting-classifier-using-sklearn/)
 * [Article - WHAT and WHY of Log Odds by Piyush Agarwal](https://towardsdatascience.com/https-towardsdatascience-com-what-and-why-of-log-odds-64ba988bf704)
+* [Article -  Weighted Logistic Regression for Imbalanced Dataset by Dinesh Yadav](https://towardsdatascience.com/weighted-logistic-regression-for-imbalanced-dataset-9a5cd88e68b)
