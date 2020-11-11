@@ -330,7 +330,7 @@ AutoML pipeline on the other hand helps us to explore different models which pro
 
 ## Future work
 
-Provided data is imbalanced: "0" 88,7951% of total outcomes and "1" is only 11,2049%. This can be lead to biased predictions towards "0" class.
+Provided data is imbalanced: "0" represents 88,7951% of total outcomes and "1" represents only 11,2049%. This can lead to biased predictions towards "0" class.
 According to calculated confusion matrix (see [standalone_lr.py](./standalone_lr.py)), only 325 "1" out of 728 were predicted correctly:
 ```
 Confusion Matrix:
@@ -339,7 +339,7 @@ Confusion Matrix:
 ```
 The value of the Area Under the Curve (0.71) and Recall Score for "1" class (0.45) show us that the model performs poorly.
 
-To mesure the performance of the model on imbalanced data, one should use an appropriate metric:
+To measure the performance of the model on imbalanced data, one should use an appropriate metric:
 *  'balanced_accuracy', 'AUC_weighted' for AutoMLRun
 *  'roc_auc_score', 'f1_score' for LogisticRegression model
 
